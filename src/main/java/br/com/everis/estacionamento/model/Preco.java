@@ -1,17 +1,21 @@
 package br.com.everis.estacionamento.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Currency;
 
 @Entity
 public class Preco {
 
 	@Id
+	@NotEmpty
 	private String tipoVeiculo;
-	
+	@Column(nullable = false)
 	private Double precoHora;
-	
+	@Column(nullable = false)
 	private Double precoHoraFracao;
 
 	public Preco() {

@@ -43,6 +43,7 @@ public class EstacionadoService {
 		estacionado.setData_entrada(LocalDate.now());
 		estacionado.setHora_entrada(LocalTime.now());
 		estacionado.setParque(parqueService.buscarParque());
+		
 		parqueService.diminuirCapacidadeEmUm();
 		
 		return repository.save(estacionado);
@@ -106,5 +107,18 @@ public class EstacionadoService {
 	 */
 	public List<Estacionado> buscarTodosRegistros(){
 		return (List<Estacionado>) repository.findAll();
+	}
+	/**
+	 * @author Cristian Bittencour Candia
+	 * @param estacionado
+	 * @return Retorna os dados de registro de entrada no estacionamento preenchidos manualmente.
+	 */
+	public Estacionado preencherDadosManualmente(Estacionado estacionado) {
+		Estacionado estacionadoManual = new Estacionado();
+		estacionadoManual.setData_entrada(estacionado.getData_entrada());
+		estacionadoManual.setHora_entrada(estacionado.getHora_entrada());
+		estacionadoManual.setParque(parqueService.buscarParque());
+		estacionadoManual.setVeiculo(estacionado.getVeiculo());
+		return estacionadoManual;
 	}
 }

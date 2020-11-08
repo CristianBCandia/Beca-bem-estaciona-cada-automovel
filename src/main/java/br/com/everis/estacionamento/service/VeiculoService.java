@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.everis.estacionamento.model.Cliente;
 import br.com.everis.estacionamento.model.Veiculo;
 import br.com.everis.estacionamento.repository.VeiculoRepository;
 
@@ -25,4 +26,5 @@ public class VeiculoService {
 	public Veiculo buscarPorId(Veiculo veiculo) {
 		return repository.findById(veiculo.getId()).get();
 	}
+
 }

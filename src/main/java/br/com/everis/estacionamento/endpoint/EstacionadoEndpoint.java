@@ -23,6 +23,11 @@ public class EstacionadoEndpoint {
 	public Estacionado registrarEntradaNoEstacionamento(Estacionado estacionado) {
 		return estacionadoService.registrarEntrada(estacionado);
 	}
+	
+	@PostMapping("preencher")
+	public Estacionado preencherDadosManualmente(Estacionado estacionado) {
+		return estacionadoService.preencherDadosManualmente(estacionado);
+	}
 
 	@RequestMapping
 	public Tiket registrarSaidaDoEstacionamento(Estacionado estacionado) {
