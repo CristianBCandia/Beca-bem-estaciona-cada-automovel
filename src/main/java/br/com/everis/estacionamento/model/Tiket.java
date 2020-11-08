@@ -7,8 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import org.hibernate.validator.constraints.br.CPF;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Tiket {
@@ -16,6 +15,8 @@ public class Tiket {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@ManyToOne
+	private Parque parque;
 	private String nomeCliente;
 	private String CPFCliente;
 	private String tipoVeiculo;
@@ -36,6 +37,16 @@ public class Tiket {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	
+	
+	public Parque getParque() {
+		return parque;
+	}
+
+	public void setParque(Parque parque) {
+		this.parque = parque;
 	}
 
 	public LocalDate getDataEntrada() {
