@@ -3,6 +3,7 @@ package br.com.everis.estacionamento.endpoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +19,7 @@ public class PrecoEndpoint {
 	PrecoService precoService;
 	
 	@PostMapping("salvar")
-	public Preco salvar(Preco preco) {
+	public Preco salvar(@RequestBody Preco preco) {
 		return precoService.salvar(preco);
 	}
 	

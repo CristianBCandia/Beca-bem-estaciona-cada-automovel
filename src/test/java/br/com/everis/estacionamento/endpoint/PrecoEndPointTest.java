@@ -1,13 +1,12 @@
 package br.com.everis.estacionamento.endpoint;
 
+import static org.mockito.ArgumentMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,44 +19,44 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import br.com.everis.estacionamento.model.Parque;
-import br.com.everis.estacionamento.repository.ParqueRepository;
-import br.com.everis.estacionamento.service.ParqueService;
+import br.com.everis.estacionamento.model.Preco;
+import br.com.everis.estacionamento.model.Veiculo;
+import br.com.everis.estacionamento.repository.PrecoRepository;
+import br.com.everis.estacionamento.service.PrecoService;
 
 @ExtendWith(MockitoExtension.class) 
 @EnableAutoConfiguration 
-@WebMvcTest(ParqueEndpoint.class)
-public class ParqueEndpointTest {
+@WebMvcTest(PrecoEndpoint.class)
+public class PrecoEndPointTest {
 	
-	List<Parque> parques = new ArrayList<>();
-	Parque parque = new Parque();
+	Preco preco = new Preco();
+	private Veiculo veiculo = new Veiculo();
 	
 	@Autowired
 	MockMvc mockMvc;
 	
 	@MockBean
-	private ParqueRepository parqueRepository;
+	private PrecoRepository precoRepository;
 	
 	@MockBean
-	private ParqueService parqueService;
+	private PrecoService precoService;
 	
 	@BeforeEach
 	public void configuracao() {
-		
-		parque.setId(1L);
-		parque.setCapacidadeMaxima(10);
-		parque.setVagasDisponiveis(9);
-		
-		parques.add(parque);
 
+		preco.setTipoVeiculo("carro");
+		preco.setPrecoHora(10.0);
+		preco.setPrecoHoraFracao(2.5);
+		
+		veiculo.setTipoVeiculo("carro");
 	}
 	
 	@Test
 	public void  deveBuscarTodosClientes() throws Exception {
 		
-		Mockito.when(parqueRepository.findAll()).thenReturn(parques);
-		Mockito.when(parqueService.buscarParque()).thenReturn(parque);
-		String url = "/parque/buscar";
+		Mockito.when(precoRepository.findById(anyString())).thenReturn(Optional.of(preco));
+		Mockito.when(precoService.buscar(any(Veiculo.class))).thenReturn(preco);
+		String url = "/preco/buscar";
 		MvcResult mvcResult = mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
 	 
 		Assertions.assertThat(mvcResult.getRequest());

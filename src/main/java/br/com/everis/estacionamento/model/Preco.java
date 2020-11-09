@@ -13,8 +13,10 @@ public class Preco {
 	@Id
 	@NotEmpty
 	private String tipoVeiculo;
+	
 	@Column(nullable = false)
 	private Double precoHora;
+	
 	@Column(nullable = false)
 	private Double precoHoraFracao;
 

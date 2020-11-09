@@ -74,7 +74,7 @@ public class ClienteServiceTest {
 		
 		Mockito.when(clienteRepository.findAll()).thenReturn(clientes);
 		
-		List<Cliente> clientesBuscar = clienteRepository.findAll();
+		List<Cliente> clientesBuscar = clienteService.buscarTodos();
 		
 		Assertions.assertEquals(clientes, clientesBuscar);
 	}

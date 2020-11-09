@@ -3,11 +3,14 @@ package br.com.everis.estacionamento.model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+
+import org.hibernate.validator.constraints.br.CPF;
 
 @Entity
 public class Tiket {
@@ -17,9 +20,14 @@ public class Tiket {
 	private Long id;
 	@ManyToOne
 	private Parque parque;
+	@Column(length = 45)
 	private String nomeCliente;
+	@CPF(message = "CPF é obrgatório na cupom de pagamento!")
+	@Column(length = 11, unique = true)
 	private String CPFCliente;
+	@Column(length = 10)
 	private String tipoVeiculo;
+	@Column(length = 10)
 	private String VeiculoPlaca;
 	private LocalDate dataEntrada;
 	private LocalDate dataSaida;

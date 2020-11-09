@@ -14,7 +14,14 @@ public class ParqueService {
 	@Autowired
 	ParqueRepository repository;
 	
-	public Parque registrarCapacidade(Parque parque) {
+	public Parque salvar(Parque parque) {
+		return repository.save(parque);
+	}
+	
+	public Parque registrarCapacidadeMaxima(Parque parque) {
+		Parque parqueDoBanco = this.buscarParque();
+		if(parque.getCapacidadeMaxima() == null) parque.setCapacidadeMaxima(parqueDoBanco.getCapacidadeMaxima());
+		if(parque.getVagasDisponiveis() == null) parque.setVagasDisponiveis(parqueDoBanco.getVagasDisponiveis());
 		return repository.save(parque);
 	}
 	
@@ -27,36 +34,55 @@ public class ParqueService {
 	 * @return Diminui em uma vaga a capacidade do estacionamento ou 
 	 * lança uma exceção caso o estacionamento esteja vazio.
 	 */
-	public Parque diminuirCapacidadeEmUm() {
+	public Parque aumentarQuantidadeDeVagasDisponiveisEmUm() {
 		
 		Parque parqueVindoDoBanco = repository.findAll().get(0);
 		
+		Integer capacidadeMaxima = parqueVindoDoBanco.getCapacidadeMaxima();
+		Integer capacidadeMinima =  capacidadeMaxima - capacidadeMaxima;
+		
+		/**
+		 * Testa se a capacidade de vagas é mínima
+		 */
 		if(parqueVindoDoBanco.getId() == null) {
+			
 			throw new NullPointerException("Erro, id não encontrado.");
-		}else if(parqueVindoDoBanco.getCapacidade() <= 0) {
-			parqueVindoDoBanco.setCapacidade(0);
-			throw new CapacidadeTotalException("CAPACIDADE TOTAL! Não é possivel reduzir a capacidade.");
+			
+		}else if(parqueVindoDoBanco.getVagasDisponiveis() >= capacidadeMaxima) {
+			
+			parqueVindoDoBanco.setVagasDisponiveis(capacidadeMaxima);
+			
+			throw new CapacidadeTotalException("ESTACIONAMENTO VAZIO! Não é possivel desocupar vagas.");
 		}
-		parqueVindoDoBanco.setCapacidade(parqueVindoDoBanco.getCapacidade() - 1);
+		
+		parqueVindoDoBanco.setVagasDisponiveis(parqueVindoDoBanco.getVagasDisponiveis() + 1);
+		
 		return parqueVindoDoBanco;
 	}
 	
 	/**
 	 * @author Cristian Bittencourt Candia
-	 * @return Aumenta em uma vaga a capacidade do estacionamento ou 
-	 * lança uma exceção caso o estacionamento esteja lotado.
+	 * 
+	 * @throws Lança uma RuntimeException do tipo EstacionamentoLotadoException 
+	 * quando o estacionamento está lotado. 
+	 * 
+	 * @return Diminui em um a quantidade de vagas disponiveis do estacionamento quando um carro 
+	 * ocupa uma vaga.
+	 * 
 	 */
-	public Parque aumentarCapacidadeEmUm() {
+	public Parque diminuirQuantidadeDeVagasDisponiveisEmUm() {
 		
 		Parque parqueVindoDoBanco = repository.findAll().get(0);
+		Integer capacidadeMaxima = parqueVindoDoBanco.getCapacidadeMaxima();
+		Integer capacidadeMinima =  capacidadeMaxima - capacidadeMaxima;
 		
 		if(parqueVindoDoBanco.getId() == null) {
 			throw new NullPointerException("Erro, id não encontrado.");
-		}else if(parqueVindoDoBanco.getCapacidade() <= 0) {
-			parqueVindoDoBanco.setCapacidade(0);
+		}else if(parqueVindoDoBanco.getVagasDisponiveis() <= capacidadeMinima) {
+			parqueVindoDoBanco.setVagasDisponiveis(capacidadeMinima);
 			throw new EstacionamentoLotadoException("ESTACIONAMENTO LOTADO! Aguarde a saída de um veículo.");
 		}
-		parqueVindoDoBanco.setCapacidade(parqueVindoDoBanco.getCapacidade() + 1);
+		parqueVindoDoBanco.setVagasDisponiveis(parqueVindoDoBanco.getVagasDisponiveis() - 1);
 		return parqueVindoDoBanco;
 	}
 	

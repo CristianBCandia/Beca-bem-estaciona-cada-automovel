@@ -21,6 +21,8 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
 import br.com.everis.estacionamento.model.Estacionado;
+import br.com.everis.estacionamento.model.Parque;
+import br.com.everis.estacionamento.model.Veiculo;
 import br.com.everis.estacionamento.repository.EstacionadoRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,6 +37,9 @@ public class EstacionadoServiceTest {
 
 	@Mock
 	EstacionadoRepository estacionadoRepository;
+	
+	@Mock
+	ParqueService parqueService;
 
 	@BeforeEach
 	public void configuracao() {
@@ -111,6 +116,32 @@ public class EstacionadoServiceTest {
 
 		Assertions.assertEquals(horarioCorreto, registroHoraSaida.getHora_saida());
 
+	}
+	
+	@Test 
+	public void deveSalvarDados_QuandoPreencherDadosManualmente() {
+		Parque parque = new Parque();
+		parque.setVagasDisponiveis(10);
+		parque.setId(1L);
+		
+		Mockito.when(parqueService.buscarParque()).thenReturn(parque);
+		
+		Estacionado estacionadoManual = new Estacionado();
+		estacionadoManual.setData_entrada(LocalDate.parse("2001-01-01"));
+		estacionadoManual.setHora_entrada(LocalTime.parse("08:24"));
+		estacionadoManual.setParque(parque);
+		estacionadoManual.setVeiculo(new Veiculo());
+		
+		Estacionado estacionadoManualTeste = new Estacionado();
+		estacionadoManualTeste.setData_entrada(LocalDate.parse("2001-01-01"));
+		estacionadoManualTeste.setHora_entrada(LocalTime.parse("08:24"));
+		estacionadoManualTeste.setParque(parque);
+		estacionadoManualTeste.setVeiculo(new Veiculo());
+		
+		Estacionado estacionadoTeste = estacionadoService.preencherDadosManualmente(estacionadoManualTeste);
+		
+		Assertions.assertEquals(estacionadoManualTeste, estacionadoTeste);
+		
 	}
 
 }

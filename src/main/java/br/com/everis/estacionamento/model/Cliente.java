@@ -2,6 +2,7 @@ package br.com.everis.estacionamento.model;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,6 +12,8 @@ import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.br.CPF;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.sun.istack.NotNull;
@@ -23,19 +26,23 @@ public class Cliente {
 	private Long id;
 
 	@NotEmpty
+	@Column(length = 45)
 	private String nome;
 
 	@NotEmpty
-	@CPF
+	@CPF(message = "Cpf é obrigatório!")
+	@Column(length = 11, unique = true)
 	private String cpf;
 
 	@NotEmpty(message = "Email é obrigatório!")
-	@Email
+	@Email(message = "Digite um email válido.")
+	@Column(length = 50)
 	private String email;
 
 	@NotNull
 	@JsonFormat(shape = Shape.STRING, pattern = "dd-MM-yyyy")
 	private LocalDate dataNascimento;
+	
 
 	public Cliente() {
 	}

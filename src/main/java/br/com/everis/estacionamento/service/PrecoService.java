@@ -17,6 +17,7 @@ public class PrecoService {
 		return precoRepository.save(preco);
 	}
 	
+	
 	public Preco buscar(Veiculo veiculo) {
 		return precoRepository.findById(veiculo.getTipoVeiculo()).get();
 	}

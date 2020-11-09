@@ -44,7 +44,7 @@ public class EstacionadoService {
 		estacionado.setHora_entrada(LocalTime.now());
 		estacionado.setParque(parqueService.buscarParque());
 		
-		parqueService.diminuirCapacidadeEmUm();
+		parqueService.diminuirQuantidadeDeVagasDisponiveisEmUm();
 		
 		return repository.save(estacionado);
 	}
@@ -62,7 +62,7 @@ public class EstacionadoService {
 		
 		repository.save(estacionadoSaindoRegistrado);
 		
-		parqueService.aumentarCapacidadeEmUm();
+		parqueService.aumentarQuantidadeDeVagasDisponiveisEmUm();
 		
 		return tiketService.gerarCupomPagamento(estacionadoSaindoRegistrado);
 	}
